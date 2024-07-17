@@ -17,7 +17,14 @@ export default function Home() {
     .join(' ');
   return (
     <>
-      <Flex direction="column" justify="center" align="center" m="auto">
+      <Flex
+        direction="column"
+        justify="center"
+        align="center"
+        m="auto"
+        py={48}
+        px={24}
+      >
         <Text
           textVariant="h1"
           textColor="mainWhite"
@@ -36,7 +43,7 @@ export default function Home() {
         >
           {Brand.description}
         </Text>
-        <Separator gap={64} />
+        <Separator gap={24} />
         <SimpleGrid mx="auto" maw={550} cols={isMobile ? 1 : 2}>
           <Card withBorder shadow="xs">
             <Center>
