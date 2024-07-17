@@ -82,9 +82,11 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
     });
 
   React.useEffect(() => {
-    Object.keys(NavigationRoute).map((key) => {
-      prefetch(NavigationRoute[key]);
-    });
+    Promise.all(
+      Object.keys(NavigationRoute).map((key) => {
+        return prefetch(NavigationRoute[key]);
+      }),
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
