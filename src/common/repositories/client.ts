@@ -8,7 +8,7 @@ import { getToken } from './token';
 export const BASE_URL =
   process.env.NODE_ENV === 'development'
     ? ('http://localhost:3000/api' as const)
-    : ('https://edufolio.vercel.app/api' as const);
+    : ('https://edufolio-two.vercel.app/api' as const);
 
 export const API_LIST = {
   admins: '/admins',
