@@ -13,12 +13,12 @@ import {
   OrganizationLiteModel,
   OrganizationModel,
 } from 'api-hooks/organization/model';
-import { UserLiteModel, UserModel } from 'api-hooks/user/model';
 import {
   StudyProgramLiteModel,
   StudyProgramModel,
 } from 'api-hooks/study-program/model';
 import { ThesisLiteModel, ThesisModel } from 'api-hooks/thesis/model';
+import { UserLiteModel, UserModel } from 'api-hooks/user/model';
 import { Expose, Type } from 'class-transformer';
 
 export class CommonModel {

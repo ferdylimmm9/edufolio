@@ -1,7 +1,7 @@
 import { Flex, SimpleGrid } from '@mantine/core';
+import { useGetStudyPrograms } from 'api-hooks/study-program/query';
 import { UserLiteModel } from 'api-hooks/user/model';
 import { useGetUsers } from 'api-hooks/user/query';
-import { useGetStudyPrograms } from 'api-hooks/study-program/query';
 import { NavigationRoute } from 'common/routes/routes';
 import TableComponent from 'components/common/table/table';
 import { Column } from 'components/common/table/types';
