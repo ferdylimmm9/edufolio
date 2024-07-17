@@ -1,0 +1,207 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model ProgramStudi {
+  id            String   @id
+  tanggalDibuat DateTime @default(now()) @map("tanggal_dibuat") @db.Timestamptz(6)
+  tanggalDiubah DateTime @updatedAt @map("tanggal_diubah") @db.Timestamptz(6)
+  nama          String
+  kode          String
+  User          User[]
+
+  @@map("program_studi")
+}
+
+model Admin {
+  nomorIdentitas String          @id @map("nomor_identitas")
+  tanggalDibuat  DateTime        @default(now()) @map("tanggal_dibuat") @db.Timestamptz(6)
+  tanggalDiubah  DateTime        @updatedAt @map("tanggal_diubah") @db.Timestamptz(6)
+  namaDepan      String          @map("nama_depan")
+  namaTengah     String          @map("nama_tengah")
+  namaBelakang   String          @map("nama_belakang")
+  deskripsi      String
+  password       String
+  status         AdminStatusEnum
+  photoUrl       String          @map("photo_url")
+
+  @@map("admin")
+}
+
+model User {
+  nomorIdentitas String        @id @map("nomor_identitas")
+  tanggalDibuat  DateTime      @default(now()) @map("tanggal_dibuat") @db.Timestamptz(6)
+  tanggalDiubah  DateTime      @updatedAt @map("tanggal_diubah") @db.Timestamptz(6)
+  namaDepan      String        @map("nama_depan")
+  namaTengah     String        @map("nama_tengah")
+  namaBelakang   String        @map("nama_belakang")
+  deskripsi      String
+  password       String
+  photoUrl       String        @map("photo_url")
+  programStudiId String        @map("program_studi_id")
+  Organisasi     Organisasi[]
+  Pendidikan     Pendidikan[]
+  Pengalaman     Pengalaman[]
+  Sertifikasi    Sertifikasi[]
+  TugasAkhir     TugasAkhir[]
+  programStudi   ProgramStudi  @relation(fields: [programStudiId], references: [id])
+
+  @@map("user")
+}
+
+model Organisasi {
+  id                 String               @id
+  tanggalDibuat      DateTime             @default(now()) @map("tanggal_dibuat") @db.Timestamptz(6)
+  tanggalDiubah      DateTime             @updatedAt @map("tanggal_diubah") @db.Timestamptz(6)
+  tanggalMulai       DateTime             @default(now()) @map("tanggal_mulai") @db.Timestamptz(6)
+  tanggalSelesai     DateTime?            @updatedAt @map("tanggal_selesai") @db.Timestamptz(6)
+  nama               String
+  deskripsi          String
+  skills             String
+  posisi             String
+  pengalamanId       String?              @map("pengalaman_id")
+  nomorIdentitasUser String               @map("nomor_identitas_user")
+  LampiranOrganisasi LampiranOrganisasi[]
+  user               User                 @relation(fields: [nomorIdentitasUser], references: [nomorIdentitas])
+  pengalaman         Pengalaman?          @relation(fields: [pengalamanId], references: [id])
+
+  @@map("organisasi")
+}
+
+model LampiranOrganisasi {
+  id           String     @id
+  organisasiId String     @map("organisasi_id")
+  fileUrl      String     @map("file_url")
+  jenisFile    String     @map("jenis_file")
+  organisasi   Organisasi @relation(fields: [organisasiId], references: [id])
+
+  @@map("lampiran_organisasi")
+}
+
+model Pengalaman {
+  id                 String               @id
+  tanggalDibuat      DateTime             @default(now()) @map("tanggal_dibuat") @db.Timestamptz(6)
+  tanggalDiubah      DateTime             @updatedAt @map("tanggal_diubah") @db.Timestamptz(6)
+  tanggalMulai       DateTime             @default(now()) @map("tanggal_mulai") @db.Timestamptz(6)
+  tanggalSelesai     DateTime?            @updatedAt @map("tanggal_selesai") @db.Timestamptz(6)
+  posisi             String
+  namaPerusahaan     String               @map("nama_perusahaan")
+  lokasi             String
+  deskripsi          String
+  skills             String
+  nomorIdentitasUser String               @map("nomor_identitas_user")
+  LampiranPengalaman LampiranPengalaman[]
+  Organisasi         Organisasi[]
+  user               User                 @relation(fields: [nomorIdentitasUser], references: [nomorIdentitas])
+
+  @@map("pengalaman")
+}
+
+model LampiranPengalaman {
+  id           String     @id
+  pengalamanId String     @map("pengalaman_id")
+  fileUrl      String     @map("file_url")
+  jenisFile    String     @map("jenis_file")
+  pengalaman   Pengalaman @relation(fields: [pengalamanId], references: [id])
+
+  @@map("lampiran_pengalaman")
+}
+
+model Sertifikasi {
+  id                  String                @id
+  tanggalDibuat       DateTime              @default(now()) @map("tanggal_dibuat") @db.Timestamptz(6)
+  tanggalDiubah       DateTime              @updatedAt @map("tanggal_diubah") @db.Timestamptz(6)
+  tanggalTerbit       DateTime              @default(now()) @map("tanggal_terbit") @db.Timestamptz(6)
+  tanggalKadaluarsa   DateTime?             @updatedAt @map("tanggal_kadaluarsa") @db.Timestamptz(6)
+  namaSertifikasi     String                @map("nama_sertifikasi")
+  namaInstitusi       String                @map("nama_institusi")
+  deskripsi           String
+  nilaiAkhir          String                @map("nilai_akhir")
+  skills              String
+  nomorIdentitasUser  String                @map("nomor_identitas_user")
+  LampiranSertifikasi LampiranSertifikasi[]
+  user                User                  @relation(fields: [nomorIdentitasUser], references: [nomorIdentitas])
+
+  @@map("sertifikasi")
+}
+
+model LampiranSertifikasi {
+  id            String      @id
+  sertifikasiId String      @map("sertifikasi_id")
+  fileUrl       String      @map("file_url")
+  jenisFile     String      @map("jenis_file")
+  sertifikasi   Sertifikasi @relation(fields: [sertifikasiId], references: [id])
+
+  @@map("lampiran_sertifikasi")
+}
+
+model Pendidikan {
+  id                 String               @id
+  tanggalDibuat      DateTime             @default(now()) @map("tanggal_dibuat") @db.Timestamptz(6)
+  tanggalDiubah      DateTime             @updatedAt @map("tanggal_diubah") @db.Timestamptz(6)
+  tanggalMulai       DateTime             @default(now()) @map("tanggal_mulai") @db.Timestamptz(6)
+  tanggalSelesai     DateTime?            @updatedAt @map("tanggal_selesai") @db.Timestamptz(6)
+  namaInstitusi      String               @map("nama_institusi")
+  gelar              String
+  bidangStudi        String               @map("bidang_studi")
+  deskripsi          String
+  nilaiAkhir         String               @map("nilai_akhir")
+  skills             String
+  nomorIdentitasUser String               @map("nomor_identitas_user")
+  LampiranPendidikan LampiranPendidikan[]
+  user               User                 @relation(fields: [nomorIdentitasUser], references: [nomorIdentitas])
+
+  @@map("pendidikan")
+}
+
+model LampiranPendidikan {
+  id           String     @id
+  pendidikanId String     @map("pendidikan_id")
+  fileUrl      String     @map("file_url")
+  jenisFile    String     @map("jenis_file")
+  pendidikan   Pendidikan @relation(fields: [pendidikanId], references: [id])
+
+  @@map("lampiran_pendidikan")
+}
+
+model TugasAkhir {
+  id                 String               @id
+  tanggalDibuat      DateTime             @default(now()) @map("tanggal_dibuat") @db.Timestamptz(6)
+  tanggalDiubah      DateTime             @updatedAt @map("tanggal_diubah") @db.Timestamptz(6)
+  tanggalTerbit      DateTime             @default(now()) @map("tanggal_terbit") @db.Timestamptz(6)
+  judulTugasAkhir    String               @map("judul_tugas_akhir")
+  abstrak            String
+  status             ThesisStatusEnum
+  nomorIdentitasUser String               @map("nomor_identitas_user")
+  LampiranTugasAkhir LampiranTugasAkhir[]
+  user               User                 @relation(fields: [nomorIdentitasUser], references: [nomorIdentitas])
+
+  @@map("tugas_akhir")
+}
+
+model LampiranTugasAkhir {
+  id           String     @id
+  tugasAkhirId String     @map("tugas_akhir_id")
+  fileUrl      String     @map("file_url")
+  jenisFile    String     @map("jenis_file")
+  tugasAkhir   TugasAkhir @relation(fields: [tugasAkhirId], references: [id])
+
+  @@map("lampiran_tugas_akhir")
+}
+
+enum AdminStatusEnum {
+  active
+  inactive
+}
+
+enum ThesisStatusEnum {
+  pending
+  reject
+  approve
+}
