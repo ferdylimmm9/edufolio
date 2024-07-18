@@ -3,6 +3,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { Lock, Pen } from '@phosphor-icons/react';
 import { MeModel } from 'api-hooks/auth/model';
 import colors from 'common/styles/colors';
+import { replaceWithBr } from 'common/utils/string';
 import Button from 'components/elements/button';
 import Text from 'components/elements/text';
 import useChangePasswordDialog from 'hooks/use-change-password-dialog';
@@ -53,7 +54,13 @@ export default function ProfileCard(props: ProfileCardProps) {
             {[user.programStudi.kode, user.programStudi.nama].join(' - ')}
           </Text>
           <Text textVariant="body1Semibold">Deskripsi:</Text>
-          <Text>{user.deskripsi || '-'}</Text>
+          <Text>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: replaceWithBr(user.deskripsi || '-'),
+              }}
+            />
+          </Text>
           <Button mt={16} onClick={open} rightSection={<Pen size={16} />}>
             Ubah Profile
           </Button>

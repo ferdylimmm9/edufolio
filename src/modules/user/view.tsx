@@ -1,6 +1,7 @@
 import { Card, Flex } from '@mantine/core';
 import { useGetUser } from 'api-hooks/user/query';
 import colors from 'common/styles/colors';
+import { replaceWithBr } from 'common/utils/string';
 import Text from 'components/elements/text';
 import LoaderView from 'components/loader-view';
 import CertificationList from 'modules/certification/certification-list';
@@ -39,7 +40,13 @@ export default function UserView() {
         const descriptionComponent = !!user?.deskripsi && (
           <Flex direction="column">
             <Text textVariant="body2Semibold">Deskripsi: </Text>
-            <Text textVariant="body2Regular">{user.deskripsi}</Text>
+            <Text textVariant="body2Regular">
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: replaceWithBr(user.deskripsi),
+                }}
+              />
+            </Text>
           </Flex>
         );
         return (

@@ -42,7 +42,13 @@ export default function LoaderView<T>(props: LoaderViewProps<T>) {
   if (isFetching) {
     return (
       <Container
-        style={isFullScreen ? { position: 'fixed', inset: 0 } : undefined}
+        style={
+          isFullScreen
+            ? { position: 'fixed', inset: 0 }
+            : {
+                margin: 'auto',
+              }
+        }
       >
         <Loader size={48} mb={24} />
         <Text ta="center" fw={600} fz={24}>

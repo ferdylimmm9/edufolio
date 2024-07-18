@@ -26,7 +26,7 @@ export function ThesisCard(props: ThesisLiteModel) {
   );
 
   return (
-    <Flex direction="column" w="100%" gap={4}>
+    <Flex direction="column" w="100%" gap={8}>
       <Text textVariant="body1Semibold">{props.judulTugasAkhir}</Text>
       {dateComponent}
       <Text textColor="foregroundSecondary" textVariant="body2Regular">

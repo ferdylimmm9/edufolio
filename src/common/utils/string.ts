@@ -167,3 +167,7 @@ export function generateIEEEReference(data: IEEEReferenceModel) {
 }
 
 export const isWindowUndefined = typeof window === 'undefined';
+
+export function replaceWithBr(content: string) {
+  return content.replace(/\n/g, '<br />');
+}

@@ -1,6 +1,8 @@
 import { Anchor, Badge, Flex } from '@mantine/core';
 import { ExperienceLiteModel } from 'api-hooks/experience/model';
 import { formatDate } from 'common/utils/date';
+import { replaceWithBr } from 'common/utils/string';
+import Separator from 'components/common/separator';
 import Text from 'components/elements/text';
 
 export function ExperienceCard(props: ExperienceLiteModel) {
@@ -35,31 +37,47 @@ export function ExperienceCard(props: ExperienceLiteModel) {
     .split('|')
     .filter(Boolean)
     .map((skill) => {
-      return <Badge>{skill}</Badge>;
+      return <Badge key={skill}>{skill}</Badge>;
     });
 
   const deskripsiComponent = props.deskripsi && (
     <Text textColor="foregroundSecondary" textVariant="body2Regular">
-      {props.deskripsi}
+      <div
+        dangerouslySetInnerHTML={{ __html: replaceWithBr(props.deskripsi) }}
+      />
     </Text>
   );
 
   return (
-    <Flex direction="column" w="100%" gap={4}>
+    <Flex direction="column" w="100%" gap={8}>
       <Text textVariant="body1Semibold">{props.posisi}</Text>
       {labelComponent}
       <Text textColor="foregroundSecondary" textVariant="body2Regular">
         {dateLabel}
       </Text>
-      {deskripsiComponent}
+      {deskripsiComponent && (
+        <>
+          <Text textVariant="body1Medium">Deskripsi</Text>
+          {deskripsiComponent}
+          <Separator gap={4} />
+        </>
+      )}
       {!!skills.length && (
-        <Flex direction="row" wrap="wrap" gap={4}>
-          {skills}
+        <>
+          <Text textVariant="body1Medium">Skills</Text>
+          <Flex direction="row" wrap="wrap" gap={4} mb={4}>
+            {skills}
+          </Flex>
+        </>
+      )}
+      {!!files.length && (
+        <Flex direction="column" gap={4} w="fit-content">
+          <>
+            <Text textVariant="body1Medium">Files</Text>
+            {files}
+          </>
         </Flex>
       )}
-      <Flex direction="column" gap={4} w="fit-content">
-        {files}
-      </Flex>
     </Flex>
   );
 }
